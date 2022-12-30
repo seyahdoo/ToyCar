@@ -1,10 +1,10 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ToyCar : MonoBehaviour
 {
     public Transform[] tires;
     public Transform[] tireGraphics;
-    public Rigidbody body;
     
     private RaycastHit[] hits = new RaycastHit[20];
 
@@ -20,11 +20,20 @@ public class ToyCar : MonoBehaviour
     public AnimationCurve brakeCurve;
     public float uprightTorque = 10f;
     public float maxSpeed = 4f;
+    public float tireRadius = .1f;
 
     public float steeringInput = 0;
     public float accelerationInput = 0;
     public float brakeInput = 0;
     
+    private Rigidbody body;
+
+
+    private void Awake()
+    {
+        body = GetComponent<Rigidbody>();
+    }
+
     private void Update()
     {
         steeringInput = Input.GetAxis("Horizontal");
@@ -47,7 +56,7 @@ public class ToyCar : MonoBehaviour
             var hit = hits[0];
             var distance = hit.distance;
             var suspensionDirection = tire.up;
-            tireGraphics[i].position = hit.point;
+            tireGraphics[i].position = hit.point + (Vector3.up * (tireRadius * .5f));
             var offset = suspensionRestDistance - distance;
             if (offset > 0)
             {
@@ -75,7 +84,7 @@ public class ToyCar : MonoBehaviour
                 if (i <= 1)
                 {
                     tire.localRotation = Quaternion.Euler(0, steeringInput * 40f, 0);
-                    tireGraphics[i].localRotation = Quaternion.Euler(0, steeringInput * 40f, 0);
+                    // tireGraphics[i].localRotation = Quaternion.Euler(0, steeringInput * 40f, 0);
                 }
                 if (i >= 2)
                 {
