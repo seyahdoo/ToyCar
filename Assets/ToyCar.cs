@@ -13,7 +13,7 @@ public class ToyCar : MonoBehaviour
     public float suspensionRestDistance;
     public float suspensionForceMultiplier = 100f;
     public float dampingForceMultiplier = 20f;
-    public float tireGripFactor = 1;
+    [Range(0,1)] public float tireGripFactor = 1;
     public float tireMass = 1f;
     public float accelerationForceMultiplier = 10f;
     public AnimationCurve accelerationCurve;
@@ -21,6 +21,7 @@ public class ToyCar : MonoBehaviour
     public float uprightTorque = 10f;
     public float maxSpeed = 4f;
     public float tireRadius = .1f;
+    public AnimationCurve leanFixCurve;
 
     public float steeringInput = 0;
     public float accelerationInput = 0;
@@ -38,9 +39,6 @@ public class ToyCar : MonoBehaviour
     {
         steeringInput = Input.GetAxis("Horizontal");
         accelerationInput = Input.GetAxis("Vertical");
-        accelerationInput = Mathf.Clamp01(accelerationInput);
-        brakeInput = Mathf.Clamp(Input.GetAxis("Vertical"), -1, 0);
-        brakeInput = -brakeInput;
     }
 
     private void FixedUpdate()
@@ -51,9 +49,9 @@ public class ToyCar : MonoBehaviour
             var hitCount = Physics.RaycastNonAlloc(tire.position, Vector3.down, hits, maxRayDistance, layerMask);
             if (hitCount <= 0) continue;
             
-            var tirePosition = tire.position;
-            var tireVelocity = body.GetPointVelocity(tirePosition);
             var hit = hits[0];
+            var tirePosition = hit.point;
+            var tireVelocity = body.GetPointVelocity(tirePosition);
             var distance = hit.distance;
             var suspensionDirection = tire.up;
             tireGraphics[i].position = hit.point + (Vector3.up * (tireRadius * .5f));
@@ -76,33 +74,21 @@ public class ToyCar : MonoBehaviour
                 var accelerationDirection = tire.forward;
                 var currentForwardSpeed = Vector3.Dot(accelerationDirection, tireVelocity);
 
-                var absoluteForwardSpeed = Mathf.Abs(currentForwardSpeed);
-                var brakeForceMultiplier = brakeCurve.Evaluate(absoluteForwardSpeed);
-                var brakeForce = Mathf.Sign(currentForwardSpeed) * brakeForceMultiplier * brakeInput * -accelerationDirection;
-                body.AddForceAtPosition(brakeForce, tirePosition);
+                var forceMultiplier = accelerationCurve.Evaluate(currentForwardSpeed / maxSpeed);
+                var accelerationForce = accelerationDirection * (accelerationInput * forceMultiplier * accelerationForceMultiplier);
+                body.AddForceAtPosition(accelerationForce, tirePosition);
                 
                 if (i <= 1)
                 {
                     tire.localRotation = Quaternion.Euler(0, steeringInput * 40f, 0);
-                    // tireGraphics[i].localRotation = Quaternion.Euler(0, steeringInput * 40f, 0);
-                }
-                if (i >= 2)
-                {
-                    var forceMultiplier = accelerationCurve.Evaluate(currentForwardSpeed / maxSpeed);
-                    var accelerationForce = accelerationDirection * (accelerationInput * forceMultiplier * accelerationForceMultiplier);
-                    Debug.Log(accelerationInput * forceMultiplier);
-                    body.AddForceAtPosition(accelerationForce, tirePosition);
                 }
                 
             }
 
             var lean = Vector3.Angle(body.transform.up, Vector3.up);
-            if (lean > 20)
-            {
-                var rot = Quaternion.FromToRotation(body.transform.up, Vector3.up);
-                body.AddTorque(new Vector3(rot.x, rot.y, rot.z) * uprightTorque);
-            }
-            
+            var leanFixNormalized = leanFixCurve.Evaluate(lean / 90);
+            var rotation = Quaternion.FromToRotation(body.transform.up, Vector3.up);
+            body.AddTorque(new Vector3(rotation.x, rotation.y, rotation.z) * (leanFixNormalized * uprightTorque));
         }
     }
 }

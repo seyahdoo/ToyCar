@@ -1100,9 +1100,9 @@ MonoBehaviour:
   suspensionRestDistance: 0.45
   suspensionForceMultiplier: 100
   dampingForceMultiplier: 2
-  tireGripFactor: 0.4
+  tireGripFactor: 0.664
   tireMass: 0.1
-  accelerationForceMultiplier: 10
+  accelerationForceMultiplier: 8
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -1160,9 +1160,42 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  uprightTorque: 100
-  maxSpeed: 10
+  uprightTorque: 9
+  maxSpeed: 20
   tireRadius: 0.7213389
+  leanFixCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.004716981
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8181962
+      value: 0.43834975
+      inSlope: 1.8031669
+      outSlope: 1.8031669
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.9976415
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   steeringInput: 0
   accelerationInput: 0
   brakeInput: 0
