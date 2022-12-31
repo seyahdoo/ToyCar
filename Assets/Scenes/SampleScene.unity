@@ -1631,7 +1631,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  uprightTorque: 9
+  uprightTorque: 60.2
   maxSpeed: 10
   tireRadius: 0.7213389
   leanFixCurve:
@@ -1640,21 +1640,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0.004716981
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 136
+      inSlope: 2.7875307
+      outSlope: 2.7875307
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.8181962
-      value: 0.43834975
-      inSlope: 1.8031669
-      outSlope: 1.8031669
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.045833334
     - serializedVersion: 3
       time: 1
       value: 0.9976415
@@ -1673,17 +1664,26 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -0.0083351135
       value: 1.0023689
-      inSlope: -0.69576377
-      outSlope: -0.69576377
+      inSlope: -0.011859501
+      outSlope: -0.011859501
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
+      time: 0.26279703
+      value: 0.99915344
+      inSlope: -0.016053496
+      outSlope: -0.016053496
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.7387487
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 0.9916687
       value: 0.30660248
-      inSlope: -0.69576377
-      outSlope: -0.69576377
+      inSlope: -0.95016855
+      outSlope: -0.95016855
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -1691,7 +1691,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxTurnRadius: 40
+  maxTurnRadius: 38
   steeringInput: 0
   accelerationInput: 0
   brakeInput: 0
